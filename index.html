@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSE Calculator</title>
+</head>
+
+<body>
+
+    <p>Enter value of slope: <input type="text" name="slope" id="slope"></p>
+    <p>Enter value of intercept: <input type="text" name="intercept" id="intercept"></p>
+    <p>Enter X: <input type="text" name="X" id="X"></p>
+    <p>Enter Y: <input type="text" name="Y" id="Y"></p>
+
+    <p><button onclick="Calculate()">Calculate</button></p>
+    <p id="Pred_y"></p>
+    <p id="SSE"></p>
+    <p id="TSS"></p>
+
+
+</body>
+
+<script>
+
+    function Calculate() {
+        var slope = parseFloat(document.getElementById("slope").value);
+        var intercept = parseFloat(document.getElementById("intercept").value);
+        var X = document.getElementById("X").value;
+        var Y = document.getElementById("Y").value;
+
+        var x = X.split(" ")
+        var y_obs = Y.split(" ")
+
+        for (var i = 0; i < x.length; i++) {
+            x[i] = parseFloat(x[i])
+            y_obs[i] = parseFloat(y_obs[i])
+        }
+
+        var SSE = []
+        var y_pred = []
+        var TSS = []
+
+        var sum = 0
+        for (var i = 0; i < x.length; i++) {
+            sum = sum + y_obs[i]
+        }
+        y_bar = (sum / y_obs.length).toFixed(3)
+
+        for (var i = 0; i < x.length; i++) {
+            y_pred.push((intercept + slope * x[i]).toFixed(3))
+            SSE.push(((y_obs[i] - y_pred[i]) ** 2).toFixed(3))
+            TSS.push(((y_obs[i] - y_bar) ** 2).toFixed(3))
+        }
+        document.getElementById("Pred_y").innerHTML = "Predicted Y: " + y_pred
+        document.getElementById("TSS").innerHTML = "TSS: " + TSS
+        document.getElementById("SSE").innerHTML = "SSE: " + SSE
+
+    }
+
+</script>
+
+</html>
